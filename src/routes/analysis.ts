@@ -1,9 +1,10 @@
 // src/routes/analysis.ts
 import express from 'express';
 import openai from 'openai';
-import PatientHistoryModel, { PatientHistory } from '../models/PatientHistory'; // Import the PatientHistory model
+import { PatientHistory } from '../models/PatientHistory'; // Import the PatientHistory model
 import PatientAnalysisModel from '../models/PatientAnalysis';
-import PatientModel, { Patient } from '../models/Patient';
+import { Patient } from '../models/Patient';
+import { PatientHistoryModel, PatientModel } from '../app';
 
 const router = express.Router();
 
@@ -29,7 +30,7 @@ router.post('/analyze_health/:patientId', async (req, res) => {
     const patientHistory: PatientHistory = await PatientHistoryModel.findOne({ patient_id: patientId });
 
     // Format data for OpenAI analysis
-    const prompt = `Patient Gender: ${patient.gender}, Age: ${patient.age}, Aadhar: ${patient.aadhar} \nSymptoms: ${symptoms}\nPatient History: ${
+    const prompt = `Patient Gender: ${patient.gender}, Age: ${patient.age}, SSN: ${patient.ssn} \nSymptoms: ${symptoms}\nPatient History: ${
       patientHistory ? patientHistory.diagnosis : 'No history available'
     }\nPredict possible diseases:`;
 
